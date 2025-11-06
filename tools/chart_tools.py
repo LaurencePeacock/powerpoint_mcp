@@ -70,7 +70,7 @@ def register_chart_tools(
             presentation_filename: str,
             chart_data: dict,
             chart_title: str = None,
-            chart_has_legend: bool = True,
+            chart_has_legend: bool = False,
             category_axis_title: str = None,
             value_axis_title: str = None,
             slide_name: str = None,

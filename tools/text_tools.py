@@ -1,6 +1,7 @@
 from mcp.server import FastMCP
 from fastmcp.server.context import Context
 import logging
+from pptx.util import Pt
 from SessionManager import SessionManager
 from utils.clean_slide_name import clean_slide_name
 
@@ -123,7 +124,7 @@ def register_text_tools(
         logger.info(f"---- There are {len(slide_to_edit.placeholders)} placeholders on slide")
         for shape in slide_to_edit.placeholders:
             logger.info(f"---- Placeholder Type: {shape.placeholder_format.type}")
-            if shape.placeholder_format.type.name in ('OBJECT',):
+            if shape.placeholder_format.type.name in ('BODY',):
                 logger.info(f"---- Found object placeholders on slide: {slide_to_edit.name}")
                 if shape.has_text_frame and not shape.text_frame.text:
                     logger.info(f"---- Checking if placeholder_has_space_for_text")
@@ -132,7 +133,11 @@ def register_text_tools(
                         break
                     logger.info(f"---- No room for text in the available placeholders")
         if text_placeholder:
-            text_placeholder.text_frame.text = text
+            text_frame = text_placeholder.text_frame
+            text_frame.text = text
+            for paragraph in text_frame.paragraphs:
+                for run in paragraph.runs:
+                    run.font.size = Pt(12)
             logger.info(f"---- Successfully added text to slide {slide_to_edit.name}, index: {slide_index}.")
             return {
                 "status": "success",

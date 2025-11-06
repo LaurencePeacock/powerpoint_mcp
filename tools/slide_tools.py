@@ -59,6 +59,7 @@ def register_slide_tools(
             for slide_layout in session_manager.slide_layouts_metadata['layouts']:
                 if slide_layout['slide_layout_name'] == slide_layout_name:
                     index = slide_layout['slide_layout_index']
+                    break
             # use index to get the layout from template collection in presentation
             new_slide_layout = presentation.slide_layouts[index]
             # add template as new slide

@@ -6,7 +6,7 @@ from typing import Dict
 from mcp.server import FastMCP
 from SessionManager import SessionManager
 from utils.presentations.create_new_presentation_from_template import create_new_presentation_from_template
-from utils.presentations.save_presentation_to_presentations_directory import save_presentation_to_presentations_directory
+from utils.presentations.save_presentation_to_presentations_directory import save_presentation_to_directory
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +32,7 @@ def register_presentation_tools(
             title_slide.name = "Title Slide"
             title = presentation_filename.split("-")[0]
             add_content_to_title_slide(title_slide, title)
-            save_presentation_to_presentations_directory(prs, f"{presentation_filename}")
+            save_presentation_to_directory(prs, f"{presentation_filename}")
             return {
                 "status": "success"
             }
@@ -62,7 +62,7 @@ def register_presentation_tools(
                 return "Error: Failed to save presentation. Details: Presentation not found for session."
             
             logger.info(f"---- Saving presentation to presentations directory as: {presentation_filename}")
-            save_presentation_to_presentations_directory(presentation, presentation_filename)
+            save_presentation_to_directory(presentation, presentation_filename)
             return f"Successfully saved presentation to presentations directory as {presentation_filename}"
         except Exception as e:
             logger.error(f"---- Failed to save presentation: {e}")

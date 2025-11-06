@@ -1,0 +1,29 @@
+layouts:
+  - slide_layout_index: 0
+    slide_layout_name: Title Slide
+    active: true
+    user_friendly_name: Title Slide
+    type: TITLE
+    content-type: Title
+    description: A title slide with a title and sub-title a plain white background. Use for the main title slide in a presentation.
+  - slide_layout_index: 1
+    slide_layout_name: Text Slide
+    active: true
+    user_friendly_name: Text Slide
+    type: CONTENT
+    content-type: Text
+    description: A content slide with a title, subtitle, and text placeholder. Can hold up to 180 words
+  - slide_layout_index: 2
+    slide_layout_name: Chart and Text Slide
+    active: true
+    user_friendly_name: Chart and Text Slide
+    type: CONTENT
+    content-type: Chart and Text
+    description: A content slide with a chart placeholder and text placeholder. Can hold up to 150 words
+  - slide_layout_index: 3
+    slide_layout_name: Large Text Slide
+    active: true
+    user_friendly_name: Large Text Slide
+    type: CONTENT
+    content-type: Text
+    description: A content slide with a large text placeholder. Can hold up to 300 words

@@ -231,6 +231,13 @@ root_agent = Agent(
             type: CONTENT
             content-type: Text
             description: A content slide with a large text placeholder. Can hold up to 300 words
+          - slide_layout_index: 4
+            slide_layout_name: Table and Text Slide
+            active: true
+            user_friendly_name: Table and Text Slide
+            type: CONTENT
+            content-type: Table and Text
+            description: A content slide with a table placeholder and text placeholder. Can hold up to 150 words
             
         EXAMPLE of a slide layout metadata:
         {

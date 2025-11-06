@@ -66,7 +66,11 @@ def set_presentation_filename_default_if_none_exists(callback_context: CallbackC
 def set_presentation_filename_in_state(filename: str, tool_context: ToolContext) -> None:
     """
     Takes a filename from the user, adds the current date and time and sets the presentation filename on the state object.
-    CRITICAL INSTRUCTION: Immediately after calling this tool, you must call the set_prs_on_sess_man_and_save_presentation_to_dir tool in the pp_mcp_toolset
+
+    CRITICAL INSTRUCTION: Immediately AFTER calling this tool, you must call the set_prs_on_sess_man_and_save_presentation_to_dir
+    tool in the pp_mcp_toolset. You MUST call the set_prs_on_sess_man_and_save_presentation_to_dir tool with the presentation filename
+    that you generate and save in the session state. Do NOT call the set_prs_on_sess_man_and_save_presentation_to_dir tool
+    without accessing the presentation_filename from the session state presentation_filename.
 
     arg: filename: string. The user provided filename
     arg: tool_context: ToolContext

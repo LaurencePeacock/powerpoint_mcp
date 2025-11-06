@@ -17,8 +17,12 @@ def register_presentation_tools(
     @pp_app.tool()
     def set_prs_on_sess_man_and_save_presentation_to_dir(presentation_filename: str) -> Dict:
         """
-        Creates a new presentation from templates directory, sets the presentation on the session manager and saves the presentation to presentations directory.
-        :param presentation_filename: string
+        Takes the presentation_filename that is stored in the session state under the presentation_filename key
+        Creates a new presentation from templates directory
+        Sets the presentation on the session manager
+        Saves the presentation to presentations directory.
+
+        :param presentation_filename: string This MUST be the same filename that is stored in the session state under the presentation_filename key
         :return: dictionary
         """
         try:

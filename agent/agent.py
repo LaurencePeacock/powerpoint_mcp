@@ -107,7 +107,7 @@ def check_presentation_filename_exists_before_calling_mcp_tool(tool: BaseTool, a
 
 root_agent = Agent(
     name='powerpoint_assistant',
-    model='gemini-2.5-flash',
+    model='gemini-2.5-pro',
     description="A Powerpoint assistant to create and edit themed Powerpoint Presentations",
     instruction="""
 

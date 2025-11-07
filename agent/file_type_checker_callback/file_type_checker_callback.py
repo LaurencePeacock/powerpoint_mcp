@@ -13,16 +13,13 @@ def file_type_checker_callback(
     llm_request: LlmRequest
 ) -> LlmResponse | None:
 
-    # Find last user turn
     user = None
-    for c in reversed(llm_request.contents or []):
-        if c.role == "user":
-            user = c
+    for content in reversed(llm_request.contents or []):
+        if content.role == "user":
+            user = content
             break
 
-    # files = 0
     is_pdf = False
-    # has_jpeg = False
     is_image = False
     is_data = False
     mime_types: set[str] = set()
@@ -30,10 +27,8 @@ def file_type_checker_callback(
     if user and user.parts:
         for p in user.parts:
             idata = getattr(p, "inline_data", None)
-            fdata = getattr(p, "file_data", None)
 
             if idata and idata.data:
-                # files += 1
                 mt = (idata.mime_type or "").lower()
                 if mt:
                     mime_types.add(mt)
@@ -43,34 +38,20 @@ def file_type_checker_callback(
                     is_image = True
                 if data_type_checker(p):
                     is_data = True
-            elif fdata and getattr(fdata, "file_uri", None):
-                # files += 1
-                mt = (getattr(fdata, "mime_type", "") or "").lower()
-                if mt:
-                    mime_types.add(mt)
-                if pdf_type_checker(p):
-                    is_pdf = True
-                if image_type_checker(p):
-                    is_image = True
-                if data_type_checker(p):
-                    is_data = True
+
 
     # Checks file size against configured limits
-    MAX_IMAGE_SIZE = 3 * 1024 * 1024  # 3MB
+    MAX_IMAGE_SIZE = 2 * 1024 * 1024  # 2MB
     MAX_DATA_SIZE = 10 * 1024 * 1024  # 10MB
 
     if user and user.parts:
         for p in user.parts:
             file_size = 0
             idata = getattr(p, "inline_data", None)
-            fdata = getattr(p, "file_data", None)
+            # fdata = getattr(p, "file_data", None)
 
             if idata and idata.data:
                 file_size = len(idata.data)
-            elif fdata and getattr(fdata, "file_uri", None):
-                file_path = getattr(fdata, "file_uri", "").replace("file://", "")
-                if os.path.exists(file_path):
-                    file_size = os.path.getsize(file_path)
 
             if file_size > 0:
                 if image_type_checker(p) and file_size > MAX_IMAGE_SIZE:
@@ -80,7 +61,7 @@ def file_type_checker_callback(
                                 role="model",
                                 parts=[
                                     gt.Part(
-                                        text="[ERROR]\nImage file size exceeds the limit of 3MB."
+                                        text="[ERROR]\nImage file size exceeds the limit of 2MB."
                                     )
                                 ],
                             )
@@ -100,7 +81,7 @@ def file_type_checker_callback(
                         ]
                     )
 
-    # saves approved attachments to S3 bucket
+    # saves approved attachments to local directory
         if is_pdf or is_image or is_data:
             try:
 
@@ -109,28 +90,14 @@ def file_type_checker_callback(
                     file_extension = extension.split("/")[1]
                 data = p.inline_data.data
 
-                # S3 Upload
-                s3_bucket = os.getenv("S3_BUCKET_NAME")
-                if s3_bucket:
-                    try:
-                        s3 = boto3.client("presentations")
-                        s3_key = ""
-                        if is_pdf:
-                            s3_key = f"pdfs/{file_name}.{file_extension}"
-                        elif is_image:
-                            s3_key = f"images/{file_name}.{file_extension}"
-                        elif is_data:
-                            s3_key = f"data/{file_name}.{file_extension}"
+                file_storage_path = "file_storage"
+                file_path = os.path.join(file_storage_path, f"{file_name}.{file_extension}")
+                with open(file_path, "wb") as f:
+                    f.write(data)
 
-                        s3.put_object(Bucket=s3_bucket, Key=s3_key, Body=data)
-                        logger.info(f"Successfully uploaded {s3_key} to S3 bucket {s3_bucket} at key {s3_key}")
-                    except (NoCredentialsError, PartialCredentialsError):
-                        logger.error("S3 credentials not found. Skipping upload.")
-                    except BotoCoreError as e:
-                        logger.error(f"S3 upload failed: {e}")
             except Exception as e:
                 logger.exception("Failed to save  name=%s", file_name, )
-                return {"status": "failure", "message": f"Failed to save artifact: {e!s}", "file_name": file_name}
+                return {"status": "failure", "message": f"Failed to save file: {e!s}", "file_name": file_name}
 
 
             meta = (

@@ -76,6 +76,7 @@ def register_presentation_tools(
             title_slide,
             title: str,
             sub_title: str = None):
+
         date_string = datetime.now().strftime('%d/%m/%Y')
 
         for placeholder in title_slide.placeholders:
@@ -83,12 +84,6 @@ def register_presentation_tools(
                 if placeholder.has_text_frame:
                     title_placeholder = placeholder
                     title_placeholder.text_frame.text = title
-            if sub_title and placeholder.placeholder_format.type.name in (
-                    'BODY',) and placeholder.name == "Text Placeholder 2":
-                placeholder.text_frame.text = sub_title
-            if placeholder.placeholder_format.type.name in ('BODY',) and placeholder.name == "Text Placeholder 3":
-                placeholder.text_frame.text = date_string
-
 
     @pp_app.tool()
     def add_title_slide_to_presentation(

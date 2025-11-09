@@ -1,4 +1,52 @@
+# PowerPoint MCP
 
+This PowerPoint MCP extends the functionality of the python-pptx library such that content can be added to presentations 
+via user provided natural language prompts. A small range of custom layout slides have been provided in this example. 
+
+It is intended to solve the following problem:
+
+#### Scenario: 
+PowerPoint presentations are created by organisations for a range of use cases, both as part of repeated processs and ad hoc.
+#### Aim: 
+For users to create organisation-specific presentations more quickly and efficiently via natural language prompts and UI file handling
+#### Issues:
+Current out-the-box Agents can generate presentations but not with corporate themes and cannot be customised with organisation-specific tools.
+#### Solution: 
+An Agent / MCP combination that facilitates session based PowerPoint creation and editing
+
+# Local Set Up
+
+1. Use UV to create the virtual environment and install packages:
+
+(If you do not have UV installed, go here: https://docs.astral.sh/uv/getting-started/installation/#standalone-installer
+)
+```shell
+  uv sync
+``` 
+
+2. Get a Gemini API Key from https://aistudio.google.com/api-keys
+
+3. Update the .env file, adding the API Key to the GOOGLE_API_KEY variable
+
+4. Start the local MCP server:
+```shell
+  fastmcp run server.py --transport http --host 0.0.0.0 --port 8001 --path /mcp
+```
+5. Run the Agent in the ADK Web UI:
+```shell
+  adk web
+```
+6. Open the provided localhost address and port
+
+7. Select 'agent' from the 'Select an agent' dropdown
+
+8. Start the agent with any prompt and enter a filename when asked
+
+9. Here are some suggested prompts
+
+
+
+# User Guide
 
 
 ### Starting the Agent

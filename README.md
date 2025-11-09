@@ -26,7 +26,7 @@ An Agent / MCP combination that facilitates session based PowerPoint creation an
 
 2. Get a Gemini API Key from https://aistudio.google.com/api-keys
 
-3. Update the .env file, adding the API Key to the GOOGLE_API_KEY variable
+3. Update the .env file, adding the API Key to the GOOGLE_API_KEY variable. (You do not need to update API_KEY)
 
 4. Start the local MCP server:
 ```shell
